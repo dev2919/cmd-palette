@@ -13,24 +13,11 @@ const List = () => {
     
     
     if (active) {
-      // itemRef2!.current!.classList.remove("bg-red-100")
-      // itemRef2!.current!.classList.remove("focus")
-      // itemRef2!.current!.
-      // console.log(itemRef2.current["itm-3"]);
-      
 
        itemRef2!.current!["itm-3"].classList.add("bg-red-500")
        itemRef2!.current["itm-3"]!.focus();
-       
-      // itemRef2!.current!.focus()
-      // itemRef2!.current!.classList.add('bg-shark-50')
-      // itemRef2!.current!.classList.remove("bg-red-100")
-    } else{
-      // itemRef2!.current!.classList.add('bg-red-100')
-      // itemRef2!.current!.classList.remove("bg-shark-50")
-      // itemRef2!.current!["itm-3"].classList.remove("focus")
 
-    }
+    } 
     
   }, [active])
 

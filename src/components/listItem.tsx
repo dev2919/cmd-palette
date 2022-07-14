@@ -1,24 +1,36 @@
 import React, { useState, useEffect, useRef , useContext } from 'react'
-import {SearchContext} from '../context/context'
 import useEventListener from '@use-it/event-listener'
 import icon from '../static/shift.svg'
+import {lookupIcon} from "heroicons-lookup";
 
 type Content = {
   body?: string;
-  icon?: string;
+  icon?: any;
   keyCode?:string;
   shift?:boolean
 };
 
-const ListItem = ({itemsRef, id, handleKeyPress, listFunction, content = {body:'home', icon: null, keyCode:null}}: {itemsRef:  React.MutableRefObject<object>, id: string, handleKeyPress: any, listFunction: any, content?: Content}) => {
+const ListItem = ({itemsRef, id, handleKeyPress, listFunction, content = {body:'home', icon: 'ExternalLinkIcon', keyCode:null}}: {itemsRef:  React.MutableRefObject<object>, id: string, handleKeyPress: any, listFunction: any, content?: Content}) => {
+
+  let Icon;
+
+  try {
+    Icon = lookupIcon(content.icon, "outline")
+  } catch (error) {
+    console.log(error);
+    Icon = lookupIcon("ExternalLinkIcon", "outline")
+  }
 
 
 const shortCutHandler = (keyEvent) => {
 
-  if (String(keyEvent.code) === content.keyCode && keyEvent.shiftKey === content.shift ) {
+  if (String(keyEvent.code) === content.keyCode && keyEvent.shiftKey === content.shift && !itemsRef!.current[Object.keys(itemsRef!.current)[0]].classList.contains('bg-shark-900')) {
     listFunction?.()
   }
 }
+
+// console.log(content);
+
 
 useEventListener('keypress', shortCutHandler);
 
@@ -31,7 +43,8 @@ useEventListener('keypress', shortCutHandler);
             ">
             <div className="flex flex-row gap-6 justify-start items-center">
                 <div className=" p-3 bg-shark-800 rounded-full" > 
-                <img src={content.icon} className="h-6" alt="" />
+                {/* <img src={content.icon} className="h-6" alt="" /> */}
+               {Icon?<Icon  className="flex h-6 text-white " />:null}
                 </div>
                 <p className="block text-lg text-white ">{content.body}</p>
             </div>
@@ -39,16 +52,17 @@ useEventListener('keypress', shortCutHandler);
 
               {content.shift?
                <div
-                 className="flex flex-col gap-2 justify-center items-center h-8 p-3 bg-shark-800 rounded-md">
+                 className="flex flex-col gap-2 justify-center items-center h-8 p-3 bg-shark-800 rounded-md ">
                    <img src={icon} className="h-6" alt="" />
                </div>
               : null}
-               
 
-                <div
-                    className="flex flex-col gap-2 justify-center items-center h-8 p-3 bg-shark-800 rounded-md">
-                    <p className="block text-lg text-white ">{content.keyCode.charAt(content.keyCode.length - 1)}</p>
+              {content.keyCode? 
+                <div className="flex flex-col gap-2 justify-center items-center h-8 p-3 bg-shark-800 rounded-md">
+                 <p className="block text-lg text-white ">{content.keyCode.charAt(content.keyCode.length - 1)}</p> 
                 </div>
+                 : null
+              }
             </div>
         </div>
 

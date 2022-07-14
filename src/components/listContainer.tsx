@@ -1,14 +1,40 @@
 import React, { useState, useEffect, useRef , useContext, ReactNode, Children } from 'react'
-import {ListContext} from '../context/context'
+import {ListContext, SearchContext} from '../context/context'
 import ListItem from './listItem'
 import uniqid from 'uniqid';
 import Searchbar from './searchbar';
+import Fuse from 'fuse.js'
 
 const ListContainer = ({ ItemList }: {ItemList: any}) => {
 
   const [active, setActive] = useState <boolean> (false)
+  const [list, setList] = useState <any> (ItemList)
   const itemsRef = useRef<object>({});
   const listContext = useContext(ListContext)
+  const searchContext= useContext(SearchContext)
+
+  
+  useEffect(() => {
+    
+    const options = {
+      keys: [
+        "content.body"
+      ]
+    };
+    
+    const fuse = new Fuse(ItemList, options);
+    
+    // Change the pattern
+    const pattern = searchContext.search
+
+    const result = fuse.search(pattern).map(item =>{return item.item})
+
+    result.length?setList(result):setList(ItemList)
+ 
+    
+  },[searchContext.search])
+
+ 
 
   const handleKeyPress = (e, field, listFunction, removeFocus) => {
 
@@ -54,6 +80,8 @@ const ListContainer = ({ ItemList }: {ItemList: any}) => {
     }
   };
 
+
+
   
   useEffect(() => {
     itemsRef!.current[Object.keys(itemsRef!.current)[0]]?.focus();
@@ -68,7 +96,7 @@ const ListContainer = ({ ItemList }: {ItemList: any}) => {
         >
           <Searchbar itemsRef={itemsRef} id={uniqid('Searchbar-')} handleKeyPress={handleKeyPress} />
           {
-            ItemList.map((item, index) => {
+            list.map((item, index) => {
               return <ListItem itemsRef={itemsRef} listFunction={item.function} content={item.content} id={uniqid('item-')} handleKeyPress={handleKeyPress} />
             })
           }
