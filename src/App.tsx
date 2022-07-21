@@ -97,8 +97,8 @@ const App = () => {
                 leaveFrom="opacity-100 translate-y-0 sm:scale-100"
                 leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
               >
-                <Dialog.Panel className="relative bg-shark-800 p-4 rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:max-w-2xl sm:w-full">
-                  <div tabIndex={1} className=' overflow-y-scroll h-80 no-scrollbar'>
+                <Dialog.Panel className="relative bg-shark-800 p-4 rounded-lg text-left overflow-hidden shadow-xl transform transition-all w-[100vw] sm:my-8 sm:max-w-2xl sm:w-full sm:relative sm:top-28 sm:self-start">
+                  <div tabIndex={1} className=' overflow-y-scroll max-h-80'>
                     <ListContainer ItemList={ItemList} />
                   </div>
                 </Dialog.Panel>

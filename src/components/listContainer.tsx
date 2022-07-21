@@ -10,6 +10,7 @@ const ListContainer = ({ ItemList }: {ItemList: any}) => {
   const [active, setActive] = useState <boolean> (false)
   const [list, setList] = useState <any> (ItemList)
   const itemsRef = useRef<object>({});
+  const containerRef = useRef<HTMLDivElement>(null);
   const listContext = useContext(ListContext)
   const searchContext= useContext(SearchContext)
 
@@ -80,6 +81,18 @@ const ListContainer = ({ ItemList }: {ItemList: any}) => {
     }
   };
 
+  useEffect(() => {
+    
+    const ele = containerRef.current
+    const height = ele.scrollHeight
+    ele.style.setProperty('max-height', height + 'px');
+
+    console.log(height);
+    
+
+  }, [Object.keys(itemsRef.current).length])
+  
+
 
 
   
@@ -92,6 +105,8 @@ const ListContainer = ({ ItemList }: {ItemList: any}) => {
 
     return (
         <div 
+        ref={containerRef}
+        className='h-80 sm:h-auto sm:min-h-0 sm:max-h-50 transition-all ease-in el'
         tabIndex={0}
         >
           <Searchbar itemsRef={itemsRef} id={uniqid('Searchbar-')} handleKeyPress={handleKeyPress} />

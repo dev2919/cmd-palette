@@ -24,7 +24,7 @@ const ListItem = ({itemsRef, id, handleKeyPress, listFunction, content = {body:'
 
 const shortCutHandler = (keyEvent) => {
 
-  if (String(keyEvent.code) === content.keyCode && keyEvent.shiftKey === content.shift && !itemsRef!.current[Object.keys(itemsRef!.current)[0]].classList.contains('bg-shark-900')) {
+  if (String(keyEvent.code) === content.keyCode && keyEvent.shiftKey === content.shift) {
     listFunction?.()
   }
 }
@@ -39,26 +39,29 @@ useEventListener('keypress', shortCutHandler);
             ref={ref => {itemsRef.current[id] = ref }}
             onKeyUp={(e)=>handleKeyPress(e, id, listFunction)}
             tabIndex={0}
+            onTouchStart={(e)=> e.currentTarget.classList.add("bg-shark-900")}
+            onTouchEnd={(e)=> e.currentTarget.classList.remove("bg-shark-900")}
+            onClick={()=>listFunction?.()}
             className="flex flex-row justify-between items-center mx-auto px-4 py-4 rounded-lg my-2 outline-none
             ">
             <div className="flex flex-row gap-6 justify-start items-center">
-                <div className=" p-3 bg-shark-800 rounded-full" > 
+                <div className=" p-3 bg-shark-600 rounded-full" > 
                 {/* <img src={content.icon} className="h-6" alt="" /> */}
                {Icon?<Icon  className="flex h-6 text-white " />:null}
                 </div>
                 <p className="block text-lg text-white ">{content.body}</p>
             </div>
-            <div className="flex flex-row gap-3 justify-start items-start">
+            <div className="flex flex-row gap-3 justify-start items-start invisible sm:visible ">
 
               {content.shift?
                <div
-                 className="flex flex-col gap-2 justify-center items-center h-8 p-3 bg-shark-800 rounded-md ">
+                 className="flex flex-col gap-2 justify-center items-center h-8 p-3 bg-shark-600 rounded-md ">
                    <img src={icon} className="h-6" alt="" />
                </div>
               : null}
 
               {content.keyCode? 
-                <div className="flex flex-col gap-2 justify-center items-center h-8 p-3 bg-shark-800 rounded-md">
+                <div className="flex flex-col gap-2 justify-center items-center h-8 p-3 bg-shark-600 rounded-md">
                  <p className="block text-lg text-white ">{content.keyCode.charAt(content.keyCode.length - 1)}</p> 
                 </div>
                  : null
