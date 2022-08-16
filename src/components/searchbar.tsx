@@ -1,5 +1,7 @@
-import React, { useState, useEffect, useContext, useRef } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import { SearchContext } from '../context/context'
+import useEventListener from '@use-it/event-listener'
+
 
 type SearchbarProps = {
   placeholder?: string,
@@ -23,13 +25,34 @@ const Searchbar = ({
     }
   }, [search])
 
+  useEffect(() => {
+    const inputRef = itemsRef.current[id]
+    inputRef.focus();
+  }, [])
+
+
+  const inputHandler = (keyEvent) => {
+
+    const inputRef = itemsRef.current[id]
+
+    if (keyEvent.keyCode >= 48 && keyEvent.keyCode <= 120) {
+      inputRef.focus();
+      
+    }
+
+  }
+
+  useEventListener('keypress', inputHandler);
+
+
 
   return (
     <input
-      className=" sticky top-0 text-2xl text-shark-100 placeholder:text-shark-400 block bg-shark-800 w-full border-x-0 border-b-2 border-shark-200 py-2 pb-3 px-4 shadow-sm focus:outline-none"
+      className="sticky top-0 text-2xl text-text placeholder:text-text block bg-background w-full border-x-0 border-b-2 border-input_border_inactive py-2 pb-3 px-4 shadow-sm focus:outline-none focus:border-input_border focus:bg-active"
       placeholder={placeholder}
       type="text"
       autoComplete="off"
+      autoFocus={true}
       tabIndex={0}
       ref={ref => { itemsRef.current[id] = ref }}
       onKeyUp={(e) => handleKeyPress(e, id)}

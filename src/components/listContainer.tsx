@@ -4,14 +4,16 @@ import ListItem from './listItem'
 import uniqid from 'uniqid';
 import Searchbar from './searchbar';
 import Fuse from 'fuse.js';
+import { log } from 'console';
+import { IndexKind } from 'typescript';
 
 
-const ListContainer = ({ ItemList }: { ItemList: any }) => {
+const ListContainer = ({ ItemList }: { ItemList: Array<Object> }) => {
 
-  const [list, setList] = useState<any>(ItemList)
+  const [list, setList] = useState<Array<any>>(ItemList)
   const itemsRef = useRef<object>({});
   const containerRef = useRef<HTMLDivElement>(null);
-  const searchContext = useContext(SearchContext)
+  const { search } = useContext(SearchContext)
 
 
   useEffect(() => {
@@ -25,18 +27,21 @@ const ListContainer = ({ ItemList }: { ItemList: any }) => {
     const fuse = new Fuse(ItemList, options);
 
     // Change the search input
-    const searchInput = searchContext.search
+    const searchInput = search
 
     const result = fuse.search(searchInput).map(item => { return item.item })
 
     result.length ? setList(result) : setList(ItemList)
 
 
-  }, [searchContext.search])
+  }, [search])
 
 
 
   const handleKeyPress = (e, field, listFunction) => {
+
+    console.log(e);
+    
 
     const moveDown = () => {
 
@@ -78,16 +83,6 @@ const ListContainer = ({ ItemList }: { ItemList: any }) => {
     modal.style.setProperty('max-height', height + 'px');
 
   }, [Object.keys(itemsRef.current).length])
-
-
-
-
-
-  useEffect(() => {
-    itemsRef!.current[Object.keys(itemsRef!.current)[0]]?.focus();
-    itemsRef!.current[Object.keys(itemsRef!.current)[0]]?.classList.add("bg-shark-900", "current")
-
-  }, [itemsRef])
 
 
   return (

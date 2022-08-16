@@ -7,25 +7,19 @@ module.exports = {
   ],
   theme: {
     extend: {
-      colors:{
-        'shark': {
-          DEFAULT: '#111317',
-          '50': '#1C2027',
-          '100': '#F3F4F6',
-          '200': '#494D52',
-          '300': '#B2B9C6',
-          '400': '#929CAE',
-          '500': '#727E97',
-          '600': '#1A1E24',
-          '700': '#111317',
-          '800': '#1C2027',
-          '900': '#111317'
-        },
+      colors: {
+        'icon_background': 'var(--color-icon_background)',
+        'background': 'var(--color-background)',
+        'active': 'var(--color-active)',
+        'text': 'var(--color-text)',
+        'icon_color': 'var(--color-icon_color)',
+        'input_border': 'var(--color-input_border)',
+        'input_border_inactive': 'var(--color-input_border_inactive)',
       }
     },
   },
   plugins: [
-    plugin(function({ addUtilities }) {
+    plugin(function ({ addUtilities }) {
       addUtilities({
         '.no-scrollbar::-webkit-scrollbar': {
           'display': 'none',
